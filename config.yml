@@ -1,0 +1,11 @@
+pub_key: YOUR_PUB_KEY
+vote_pub_key: YOUR_VOTE_KEY
+network_rpc_endpoint: https://api.testnet.solana.com
+validator_rpc_endpoint: http://localhost:8899
+
+sleep_time: 45
+metric_port: 1234
+
+thread_pool_size: 2
+log_level: DEBUG  # INFO/WARNING/SUCCESS/ERROR
+retry: 10

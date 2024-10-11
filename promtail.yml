@@ -1,0 +1,53 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: https://YOUR_USERNAME:YOUR_API_TOKEN@logs-prod-006.grafana.net/loki/api/v1/push
+scrape_configs:
+  - job_name: "monitor-logs"
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          __path__: /app/logs/monitor.log
+          job: monitor-logs
+    pipeline_stages:
+      - regex:
+          expression: '(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) \| (?P<level>\S+) *\| (?P<source>.*?) - (?P<message>.*)$'
+      - labels:
+          level:
+          source:
+      - timestamp:
+          source: timestamp
+          format: '2006-01-02 15:04:05.000'
+          location: Europe/Moscow
+      - output:
+          source: message
+  - job_name: "solana-logs"
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          __path__: /var/log/solana.log
+          job: solana-logs
+    pipeline_stages:
+      - regex:
+          expression: '\[(?P<timestamp>.*?)\s+(?P<level>.*?)\s+(?P<source>.*?)\]\s+(?P<message>.*)'
+      - labels:
+          level:
+          source:
+      - timestamp:
+          source: timestamp
+          format: RFC3339
+          location: Europe/Moscow
+      - match:
+          selector: '{level!="ERROR"}'
+          action: drop
+          drop_counter_reason: promtail_noisy_error
+      - output:
+          source: message
+
