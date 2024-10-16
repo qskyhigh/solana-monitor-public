@@ -84,29 +84,9 @@ clients:
 4. Use the generated tokens to replace the placeholders in `prometheus.yml` and `promtail.yml`.
 
 ## Grafana Dashboard Configuration
-When importing the provided Grafana dashboard, you will need to replace the `uid` values for your Prometheus and Loki datasources. This ensures that the data is pulled from your configured sources.
 
-### Replace Prometheus UID:
-In the JSON file of the Grafana dashboard, locate:
-```json
-"datasource": {
-  "type": "prometheus",
-  "uid": "grafanacloud-prom"
-}
-```
-Replace `grafanacloud-prom` with the UID of your Prometheus datasource.
-
-### Replace Loki UID:
-Similarly, find the Loki datasource:
-```json
-"datasource": {
-  "type": "loki",
-  "uid": "grafanacloud-logs"
-}
-```
-Replace `grafanacloud-logs` with the UID of your Loki datasource.
-
-You need to ensure that all occurrences of these UIDs are updated in the dashboard JSON file before importing it into Grafana.
+The dashboard can be imported from the docs/ directory to your Grafana instance<br>
+  - Default is to utilize a label applied by the collector `host: solana-monitor-testnet` (can be editted to match your environment)
 
 ## Testing
 You can check the running Docker containers with:
