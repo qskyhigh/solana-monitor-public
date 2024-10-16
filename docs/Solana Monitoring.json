@@ -127,7 +127,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_network_epoch{instance=\"$host\"}",
+          "expr": "solana_network_epoch{host=\"$host\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -203,7 +203,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "(solana_slot_index{instance=\"$host\"}*100)/solana_slot_in_epoch{instance=\"$host\"}",
+          "expr": "(solana_slot_index{host=\"$host\"}*100)/solana_slot_in_epoch{host=\"$host\"}",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -288,7 +288,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_node_health{status=\"healthy\",instance=\"$host\"}",
+          "expr": "solana_node_health{status=\"healthy\", host=\"$host\"}",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -368,7 +368,7 @@
           "disableTextWrap": false,
           "editorMode": "code",
           "exemplar": true,
-          "expr": "topk(1, solana_node_version{instance=\"$host\"})",
+          "expr": "topk(1, solana_node_version{host=\"$host\"})",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -456,7 +456,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "(((count(count(node_cpu_seconds_total) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle'}[5m])))) * 100) / count(count(node_cpu_seconds_total) by (cpu))",
+          "expr": "(((count(count(node_cpu_seconds_total{host=\"$host\"}) by (cpu))) - avg(sum by (mode)(irate(node_cpu_seconds_total{mode='idle', host=\"$host\"}[5m])))) * 100) / count(count(node_cpu_seconds_total{host=\"$host\"}) by (cpu))",
           "interval": "",
           "legendFormat": "{{label_name}}CPU Busy",
           "range": true,
@@ -468,7 +468,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "100 - ((node_memory_MemAvailable_bytes * 100) / node_memory_MemTotal_bytes)",
+          "expr": "100 - ((node_memory_MemAvailable_bytes{host=\"$host\"} * 100) / node_memory_MemTotal_bytes{host=\"$host\"})",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}RAM Used",
@@ -481,7 +481,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "100 - ((node_filesystem_avail_bytes{mountpoint=\"/\",fstype!=\"rootfs\"} * 100) / node_filesystem_size_bytes{mountpoint=\"/\",fstype!=\"rootfs\"})",
+          "expr": "100 - ((node_filesystem_avail_bytes{mountpoint=\"/\",fstype!=\"rootfs\", host=\"$host\"} * 100) / node_filesystem_size_bytes{mountpoint=\"/\",fstype!=\"rootfs\", host=\"$host\"})",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Root FS Used",
@@ -494,7 +494,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "avg(node_load5) /  count(count(node_cpu_seconds_total) by (cpu)) * 100",
+          "expr": "avg(node_load5{host=\"$host\"}) /  count(count(node_cpu_seconds_total{host=\"$host\"}) by (cpu)) * 100",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Sys Load (5m avg)",
@@ -567,7 +567,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_filesystem_size_bytes{device!~'rootfs',mountpoint=\"/\"} - node_filesystem_avail_bytes{device!~'rootfs',mountpoint=\"/\"}",
+          "expr": "node_filesystem_size_bytes{device!~'rootfs',mountpoint=\"/\", host=\"$host\"} - node_filesystem_avail_bytes{device!~'rootfs',mountpoint=\"/\", host=\"$host\"}",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -583,7 +583,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_filesystem_size_bytes{device!~'rootfs', mountpoint=\"/\"}",
+          "expr": "node_filesystem_size_bytes{device!~'rootfs', mountpoint=\"/\", host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Total",
@@ -664,7 +664,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_time_seconds - node_boot_time_seconds",
+          "expr": "node_time_seconds{host=\"$host\"} - node_boot_time_seconds{host=\"$host\"}",
           "intervalFactor": 2,
           "range": true,
           "refId": "A",
@@ -742,7 +742,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "solana_account_balance{instance=\"$host\"}",
+          "expr": "solana_account_balance{host=\"$host\"}",
           "instant": false,
           "interval": "",
           "legendFormat": "{{label_name}}Identity account",
@@ -754,7 +754,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_vote_account_balance{instance=\"$host\"}",
+          "expr": "solana_vote_account_balance{host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Vote account",
@@ -853,7 +853,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "last_over_time(solana_val_total_leader_slots{instance=\"$host\"}[2m])",
+          "expr": "last_over_time(solana_val_total_leader_slots{host=\"$host\"}[2m])",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Total",
@@ -867,7 +867,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "last_over_time(solana_val_blocks_produced{instance=\"$host\"}[2m])",
+          "expr": "last_over_time(solana_val_blocks_produced{host=\"$host\"}[2m])",
           "interval": "",
           "legendFormat": "{{label_name}}Produced",
           "range": true,
@@ -879,7 +879,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "last_over_time(solana_val_skipped_slots{instance=\"$host\"}[2m])",
+          "expr": "last_over_time(solana_val_skipped_slots{host=\"$host\"}[2m])",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Skipped",
@@ -1269,7 +1269,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=\"system\", host=\"$host\"}[5m])) * 100",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1284,7 +1284,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user'}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='user', host=\"$host\"}[5m])) * 100",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1299,7 +1299,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait'}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode='iowait', host=\"$host\"}[5m])) * 100",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Busy Iowait",
@@ -1313,7 +1313,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\"}[5m])) * 100",
+          "expr": "sum by (instance)(irate(node_cpu_seconds_total{mode=~\".*irq\", host=\"$host\"}[5m])) * 100",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Busy IRQs",
@@ -1327,7 +1327,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq'}[5m])) * 100",
+          "expr": "sum (irate(node_cpu_seconds_total{mode!='idle',mode!='user',mode!='system',mode!='iowait',mode!='irq',mode!='softirq', host=\"$host\"}[5m])) * 100",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Busy Other",
@@ -1341,7 +1341,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle'}[5m])) * 100",
+          "expr": "sum by (mode)(irate(node_cpu_seconds_total{mode='idle', host=\"$host\"}[5m])) * 100",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "Idle",
@@ -1815,7 +1815,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_memory_MemTotal_bytes",
+          "expr": "node_memory_MemTotal_bytes{host=\"$host\"}",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1830,7 +1830,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_memory_MemTotal_bytes - node_memory_MemFree_bytes - (node_memory_Cached_bytes + node_memory_Buffers_bytes)",
+          "expr": "node_memory_MemTotal_bytes{host=\"$host\"} - node_memory_MemFree_bytes{host=\"$host\"} - (node_memory_Cached_bytes{host=\"$host\"} + node_memory_Buffers_bytes{host=\"$host\"})",
           "format": "time_series",
           "hide": false,
           "intervalFactor": 2,
@@ -1845,7 +1845,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_memory_Cached_bytes + node_memory_Buffers_bytes",
+          "expr": "node_memory_Cached_bytes{host=\"$host\"} + node_memory_Buffers_bytes{host=\"$host\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "RAM Cache + Buffer",
@@ -1859,7 +1859,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "node_memory_MemFree_bytes",
+          "expr": "node_memory_MemFree_bytes{host=\"$host\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "RAM Free",
@@ -1873,7 +1873,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "(node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes)",
+          "expr": "(node_memory_SwapTotal_bytes{host=\"$host\"} - node_memory_SwapFree_bytes{host=\"$host\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "SWAP Used",
@@ -1951,7 +1951,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_validator_activated_stake{instance=\"$host\"}",
+          "expr": "solana_validator_activated_stake{host=\"$host\"}",
           "interval": "",
           "legendFormat": "{{label_name}}Validator stake, SOL",
           "range": true,
@@ -1963,7 +1963,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_val_commission{instance=\"$host\"}",
+          "expr": "solana_val_commission{host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Commision, %",
@@ -2038,7 +2038,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "(solana_current_slot{instance=\"$host\"} - solana_previous_leader_slot{instance=\"$host\"}) * 100/(solana_next_leader_slot{instance=\"$host\"} - solana_previous_leader_slot{instance=\"$host\"})",
+          "expr": "(solana_current_slot{host=\"$host\"} - solana_previous_leader_slot{host=\"$host\"}) * 100/(solana_next_leader_slot{host=\"$host\"} - solana_previous_leader_slot{host=\"$host\"})",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -2110,7 +2110,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "solana_val_skip_rate{instance=\"$host\"}",
+          "expr": "solana_val_skip_rate{host=\"$host\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2190,7 +2190,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_next_slot_time{instance=\"$host\"} * 1000",
+          "expr": "solana_next_slot_time{host=\"$host\"} * 1000",
           "format": "time_series",
           "instant": false,
           "legendFormat": "__auto",
@@ -2267,7 +2267,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "solana_active_validators{state=\"current\", instance=\"$host\"}",
+          "expr": "solana_active_validators{state=\"current\", host=\"$host\"}",
           "interval": "",
           "legendFormat": "{{label_name}}Current",
           "range": true,
@@ -2279,7 +2279,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_active_validators{state=\"delinquent\", instance=\"$host\"}",
+          "expr": "solana_active_validators{state=\"delinquent\", host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Delinquent",
@@ -2407,7 +2407,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_delinquent_stake*100/solana_active_stake",
+          "expr": "solana_delinquent_stake{host=\"$host\"}*100/solana_active_stake{host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Delinquent",
@@ -2867,7 +2867,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "irate(node_network_receive_bytes_total[5m])*8",
+          "expr": "irate(node_network_receive_bytes_total{host=\"$host\"}[5m])*8",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "recv {{device}}",
@@ -2881,7 +2881,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "irate(node_network_transmit_bytes_total[5m])*8",
+          "expr": "irate(node_network_transmit_bytes_total{host=\"$host\"}[5m])*8",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "trans {{device}} ",
@@ -2987,7 +2987,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "100 - ((node_filesystem_avail_bytes{device!~'rootfs'} * 100) / node_filesystem_size_bytes{device!~'rootfs'})",
+          "expr": "100 - ((node_filesystem_avail_bytes{device!~'rootfs', host=\"$host\"} * 100) / node_filesystem_size_bytes{device!~'rootfs', host=\"$host\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{mountpoint}}",
@@ -3056,7 +3056,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_total_slots{instance=\"$host\"}",
+          "expr": "solana_total_slots{host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Total leader slots",
@@ -3070,7 +3070,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "solana_total_blocks_produced{instance=\"$host\"}",
+          "expr": "solana_total_blocks_produced{host=\"$host\"}",
           "interval": "",
           "legendFormat": "{{label_name}}Produced",
           "range": true,
@@ -3082,7 +3082,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_skipped_total{instance=\"$host\"}",
+          "expr": "solana_skipped_total{host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}}Skipped",
@@ -3270,7 +3270,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "solana_val_skip_rate{instance=\"$host\"}",
+          "expr": "solana_val_skip_rate{host=\"$host\"}",
           "interval": "",
           "legendFormat": "{{label_name}}Validator Skip Rate",
           "range": true,
@@ -3282,7 +3282,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_net_skip_rate{instance=\"$host\"}",
+          "expr": "solana_net_skip_rate{host=\"$host\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "{{label_name}} Network Skip Rate",
@@ -3387,7 +3387,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "solana_net_skip_rate{instance=\"$host\"}",
+          "expr": "solana_net_skip_rate{host=\"$host\"}",
           "interval": "",
           "legendFormat": "",
           "range": true,
@@ -3491,7 +3491,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "solana_skip_rate_diff{instance=\"$host\"}",
+          "expr": "solana_skip_rate_diff{host=\"$host\"}",
           "interval": "",
           "legendFormat": "",
           "range": true,
@@ -3608,7 +3608,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(solana_tx_count{instance=\"$host\"}[15m])",
+          "expr": "rate(solana_tx_count{host=\"$host\"}[15m])",
           "instant": false,
           "legendFormat": "{{label_name}}Transactions",
           "range": true,
@@ -3707,7 +3707,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "rate(solana_vote_credits{instance=\"$host\"}[15m])",
+          "expr": "rate(solana_vote_credits{host=\"$host\"}[15m])",
           "instant": false,
           "legendFormat": "{{label_name}}Credits",
           "range": true,
@@ -3805,7 +3805,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_avg_slot_duration{instance=\"$host\"}",
+          "expr": "solana_avg_slot_duration{host=\"$host\"}",
           "instant": false,
           "legendFormat": "{{label_name}}Duration, sec",
           "range": true,
@@ -3937,7 +3937,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "solana_slot_diff{instance=\"$host\"}",
+          "expr": "solana_slot_diff{host=\"$host\"}",
           "legendFormat": "{{label_name}}Slot Difference",
           "range": true,
           "refId": "A"
@@ -4054,7 +4054,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "solana_block_height_diff{instance=\"$host\"}",
+          "expr": "solana_block_height_diff{host=\"$host\"}",
           "legendFormat": "{{label_name}}Block Height Difference",
           "range": true,
           "refId": "A"
@@ -4179,7 +4179,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_vote_height_diff{instance=\"$host\"}",
+          "expr": "solana_vote_height_diff{host=\"$host\"}",
           "interval": "",
           "legendFormat": "__auto",
           "range": true,
@@ -4312,7 +4312,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_validator_vote_height{instance=\"$host\"}",
+          "expr": "solana_validator_vote_height{host=\"$host\"}",
           "interval": "",
           "legendFormat": "",
           "range": true,
@@ -4430,7 +4430,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_network_vote_height{instance=\"$host\"}",
+          "expr": "solana_network_vote_height{host=\"$host\"}",
           "interval": "",
           "legendFormat": "",
           "range": true,
@@ -4545,7 +4545,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "solana_vote_credits{instance=\"$host\"}",
+          "expr": "solana_vote_credits{host=\"$host\"}",
           "instant": false,
           "legendFormat": "{{label_name}}Credits",
           "range": true,
@@ -4681,7 +4681,7 @@
         {
           "disableTextWrap": false,
           "editorMode": "code",
-          "expr": "max(\n  (solana_val_max_retransmit_slot{instance=\"$host\"} - solana_net_max_retransmit_slot{instance=\"$host\"}) \n  and (solana_val_max_retransmit_slot{instance=\"$host\"} > 0) \n  and (solana_net_max_retransmit_slot{instance=\"$host\"} > 0)\n) or vector(0)",
+          "expr": "max(\n  (solana_val_max_retransmit_slot{host=\"$host\"} - solana_net_max_retransmit_slot{host=\"$host\"}) \n  and (solana_val_max_retransmit_slot{host=\"$host\"} > 0) \n  and (solana_net_max_retransmit_slot{host=\"$host\"} > 0)\n) or vector(0)",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "legendFormat": "{{label_name}}Slot",
@@ -4830,7 +4830,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max(\n  (solana_val_max_shred_insert_slot{instance=\"$host\"} - solana_net_max_shred_insert_slot{instance=\"$host\"}) \n  and (solana_val_max_shred_insert_slot{instance=\"$host\"} > 0) \n  and (solana_net_max_shred_insert_slot{instance=\"$host\"} > 0)\n) or vector(0)",
+          "expr": "max(\n  (solana_val_max_shred_insert_slot{host=\"$host\"} - solana_net_max_shred_insert_slot{host=\"$host\"}) \n  and (solana_val_max_shred_insert_slot{host=\"$host\"} > 0) \n  and (solana_net_max_shred_insert_slot{host=\"$host\"} > 0)\n) or vector(0)",
           "legendFormat": "{{label_name}}Slot",
           "range": true,
           "refId": "A"
@@ -4937,7 +4937,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "solana_node_health{status=\"healthy\", instance=\"$host\"}",
+          "expr": "solana_node_health{status=\"healthy\", host=\"$host\"}",
           "legendFormat": "{{label_name}} Health",
           "range": true,
           "refId": "A"
@@ -5031,7 +5031,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "solana_account_balance{instance=\"$host\"}",
+          "expr": "solana_account_balance{host=\"$host\"}",
           "legendFormat": "{{label_name}}Balance",
           "range": true,
           "refId": "A"
@@ -5121,7 +5121,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "solana_vote_account_balance{instance=\"$host\"}",
+          "expr": "solana_vote_account_balance{host=\"$host\"}",
           "legendFormat": "{{label_name}}Balance",
           "range": true,
           "refId": "A"
@@ -5426,20 +5426,20 @@
     "list": [
       {
         "current": {
-          "text": "solana-monitor",
-          "value": "solana-monitor"
+          "text": "solana-monitor-testnet",
+          "value": "solana-monitor-testnet"
         },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(solana_account_balance{instance=\"$host\"},instance)",
+        "definition": "label_values(host)",
         "label": "Host:",
         "name": "host",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(solana_account_balance{instance=\"$host\"},instance)",
+          "query": "label_values(host)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -5467,6 +5467,6 @@
   "timezone": "browser",
   "title": "Solana Monitoring by qskyhigh",
   "uid": "ddy9etwe3nzswf",
-  "version": 122,
+  "version": 128,
   "weekStart": ""
 }
