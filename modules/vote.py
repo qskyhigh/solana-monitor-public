@@ -14,6 +14,11 @@ rpc_urls = {
 
 
 def get_vote_accounts(result):
+    if "error" in result:
+        error_code = result["error"].get("code", "Unknown code")
+        error_message = result["error"].get("message", "Unknown message")
+        logger.error(f"Error fetching vote accounts - code: {error_code}, message: {error_message}")
+        return None
     return result.get('result', {}).get('current', []) or result.get('result', {}).get('delinquent', [])
 
 
@@ -88,14 +93,14 @@ async def get_votes():
     try:
         results = blocks
         validator_vote_height = network_vote_height = None
-        if all("error" not in res for res in results):
+        if results:
             vote_accounts_network = get_vote_accounts(results[0]) if len(results) > 0 else None
             if vote_accounts_network:
                 network_vote_height = vote_accounts_network[0]['lastVote']
                 update_metric(solana_network_vote_height, network_vote_height, labels={"rpc": "network"})
                 logger.debug(f"Network vote height: {network_vote_height}")
             else:
-                logger.warning(f"{func_name.upper()} No vote data for validator")
+                logger.warning(f"{func_name.upper()} No vote data for network")
 
             vote_accounts_validator = get_vote_accounts(results[1]) if len(results) > 1 else None
             if vote_accounts_validator:
@@ -103,7 +108,7 @@ async def get_votes():
                 update_metric(solana_validator_vote_height, validator_vote_height, labels={"rpc": "validator"})
                 logger.debug(f"Validator vote height: {validator_vote_height}")
             else:
-                logger.warning(f"{func_name.upper()} No vote data for network")
+                logger.warning(f"{func_name.upper()} No vote data for validator")
 
             if vote_accounts_network and vote_accounts_validator:
                 update_metric(solana_vote_height_diff, validator_vote_height - network_vote_height)

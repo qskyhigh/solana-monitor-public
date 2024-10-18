@@ -86,7 +86,7 @@ clients:
 ## Grafana Dashboard Configuration
 
 The dashboard can be imported from the docs/ directory to your Grafana instance<br>
-  - Default is to utilize a label applied by the collector `host: solana-monitor-testnet` (can be editted to match your environment)
+  - Default is to utilize a label applied by the collector `host: solana-monitor-testnet` (you can change the global label in `prometheus.yml`)
 
 ## Testing
 You can check the running Docker containers with:
