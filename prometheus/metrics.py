@@ -59,6 +59,7 @@ solana_validator_activated_stake = Gauge('solana_validator_activated_stake', 'Ac
                                          ['pubkey', 'votekey'])
 solana_val_status = Gauge('solana_val_status', 'Solana validator voting status i.e., voting or jailed', ['state'])
 solana_vote_credits = Gauge('solana_vote_credits', 'Solana validator vote credits of current epoch')
+solana_avg_vote_credits = Gauge('solana_avg_vote_credits', 'Average network vote credits of current epoch')
 solana_total_credits = Gauge('solana_total_credits', 'Solana validator vote credits of all epochs')
 
 # vote module
