@@ -9,6 +9,28 @@ This project monitors Solana validator metrics using Docker and Docker Compose. 
 - **Docker Compose**: Multi-container orchestration
 - **Git**: To clone the repository
 
+## Path Configuration
+
+### Solana Node Path
+If you installed the Solana node under a different user (not `root`), you need to modify the path in `docker-compose.yml`. 
+
+Find this line:
+```yaml
+- /root/.local/share/solana/install/active_release/bin:/solana
+```
+
+You can find your Solana installation path by running:
+```bash
+which solana
+```
+
+Similarly, update the Solana log path in the promtail service if needed:
+```yaml
+- /root/solana/solana.log:/var/log/solana.log  # Change /root to your user's home directory
+```
+
+These path adjustments ensure the containers can access your Solana installation and log files correctly.
+
 ## Building the Project
 
 ### 1. Install Docker and Docker Compose
